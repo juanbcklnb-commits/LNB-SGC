@@ -883,3 +883,47 @@ setInterval(loadData, 5 * 60 * 1000);
 </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Tablero con Google Sheets</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+</head>
+<body>
+
+    <h1>Datos de Google Sheets</h1>
+    <div id="contenido">Cargando datos...</div>
+
+    <script>
+        // Tu URL pública de Google Sheets en formato CSV
+        const public_csv_url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQWmXFEoqpd7NT9tJKpvLVoD8C3cd-t-Ub2CIsSxt_23ppOHnKDjcwKrKykRndwOkOrE5p0p1xX8tNV/pub?gid=1451749554&single=true&output=csv';
+
+        function init() {
+            Papa.parse(public_csv_url, {
+                download: true,
+                header: true, // Cambia a false si tu Excel no tiene fila de títulos
+                complete: function(results) {
+                    let data = results.data;
+                    console.log(data); // Ver los datos en la consola del navegador
+                    
+                    // Aquí puedes renderizar los datos en una tabla HTML
+                    let html = '<table border="1">';
+                    data.forEach(row => {
+                        html += '<tr>';
+                        for (let key in row) {
+                            html += `<td>${row[key]}</td>`;
+                        }
+                        html += '</tr>';
+                    });
+                    html += '</table>';
+                    
+                    document.getElementById('contenido').innerHTML = html;
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
